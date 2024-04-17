@@ -12,13 +12,16 @@ client = discord.Client(intents=discord.Intents.default())
 
 @client.event
 async def on_ready():
-    for guild in client.guilds:
-        if guild.name == GUILD:
-            break
-
+    guild = discord.utils.find(lambda g: g.name == GUILD, client.guilds)
     print(
         f'{client.user} is connected to the following guild:\n'
         f'{guild.name}(id: {guild.id})'
     )
+
+@client.event
+async def on_typing(channel, user, when):
+    print(channel)
+    print(user)
+    print(when)
 
 client.run(TOKEN)
