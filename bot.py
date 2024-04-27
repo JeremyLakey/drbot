@@ -14,6 +14,7 @@ GUILD = os.getenv('DISCORD_GUILD')
 
 f = open("whitelist.json")
 data = json.load(f)
+channel = data['channel']
 whitelist = data['whitelist']
 categories = data['categories']
 f.close()
@@ -27,6 +28,9 @@ url_pattern=re.compile(r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA
 
 @bot.command(name="parse")
 async def parse(ctx, *args):
+    if channel != str(ctx.channel):
+        print(ctx.channel)
+        return
     print(ctx.author)
     print(whitelist)
     print(args)
@@ -37,7 +41,7 @@ async def parse(ctx, *args):
             for c in categories:
                 t += "\n" + c
             await ctx.send(t)
-        file = scrap_recipe(args)
+        file = scrap_recipe(args[0])
         if file is not None:
             print(file)
             commit_file(file)

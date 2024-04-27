@@ -137,3 +137,6 @@ def scrap_recipe(url):
 
 if __name__ == "__main__":
     print(scrap_recipe("https://www.thechunkychef.com/family-favorite-baked-mac-and-cheese/"))
+
+# failed urls
+# https://sugarspunrun.com/vanilla-cake-recipe/
