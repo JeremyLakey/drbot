@@ -3,6 +3,7 @@ import os
 import re
 import discord
 import json
+import shutil
 from discord.ext import commands
 from dotenv import load_dotenv
 from scrapper import scrap_recipe
@@ -41,10 +42,13 @@ async def parse(ctx, *args):
             for c in categories:
                 t += "\n" + c
             await ctx.send(t)
-        file = scrap_recipe(args[0])
+            return
+
+        file = scrap_recipe(args[0], args[1])
+
         if file is not None:
             print(file)
-            commit_file(file)
+            update_files(file, args[1])
             await ctx.send("Parse recipe successfully")
         else:
             await ctx.send("Error Parsing Url")
@@ -53,6 +57,9 @@ async def parse(ctx, *args):
         await ctx.send("Invalid Url")
 
 
-
+def update_files(file, category):
+    shutil.move("./recipes/" + file, "./recipes/" + category + "/" + file)
+    commit_file(category + "/" + file)
+    commit_file(category + "/" + category + ".md")
 
 bot.run(TOKEN)
